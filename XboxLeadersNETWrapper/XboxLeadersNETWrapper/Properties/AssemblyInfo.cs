@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("XboxLeadersNETWrapper")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Narfsoft, LLC")]
+[assembly: AssemblyCompany("QuantumPhysGuy")]
 [assembly: AssemblyProduct("XboxLeadersNETWrapper")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]

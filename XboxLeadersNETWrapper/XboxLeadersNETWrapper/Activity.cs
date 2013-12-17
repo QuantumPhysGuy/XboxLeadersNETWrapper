@@ -3,6 +3,9 @@ using System.Drawing;
 
 namespace XboxLeadersNETWrapper
 {
+    /// <summary>
+    /// Represents an activity the gamer has performed.
+    /// </summary>
     public class Activity
     {
         /// <summary>

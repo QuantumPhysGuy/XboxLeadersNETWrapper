@@ -2,6 +2,7 @@
 using System.IO;
 using System.Net;
 using System.Xml;
+using System.Web;
 using System.Drawing;
 using System.Xml.Linq;
 using System.Xml.XPath;
@@ -19,7 +20,8 @@ namespace XboxLeadersNETWrapper
         /// Downloads the profile data for a the specified gamer tag.
         /// </summary>
         /// <param name="sGamerTag">The gamer tag to download profile data for.</param>
-        /// <returns>Returns a <seealso cref="XboxLeadersAPI.Profile">Profile</seealso> object.</returns>
+        /// <returns>Returns a <seealso cref="XboxLeadersNETWrapper.Profile">Profile</seealso> object.</returns>
+        /// <example>XboxLeadersNETWrapper.Profile pProfile = XboxLeadersNETWrapper.DownloadProfileData("Major Nelson");</example>
         public static Profile DownloadProfileData(String sGamerTag)
         {
             WebClient wcDownloader = new WebClient();
@@ -47,7 +49,7 @@ namespace XboxLeadersNETWrapper
                 //TODO: Catch errors in JSON feed (Problem: If JSON returns a 501 the WebClient throws an exception.)
                 throw new Exception("");
             }
-
+            
             pDownloadedProfile.GamerTag = xProfile.SelectSingleNode("root/data/gamertag").InnerText;
             pDownloadedProfile.Avatar = DownloadImage(xProfile.SelectSingleNode("root/data/avatar/full").InnerText);
             pDownloadedProfile.GamerScore = Int32.Parse(xProfile.SelectSingleNode("root/data/gamerscore").InnerText);
@@ -68,7 +70,7 @@ namespace XboxLeadersNETWrapper
                 tmpActivity.ID = Int32.Parse(xNode.SelectSingleNode("id").InnerText);
                 tmpActivity.HID = xNode.SelectSingleNode("hid").InnerText;
                 tmpActivity.IsApp = Boolean.Parse(xNode.SelectSingleNode("isapp").InnerText);
-                tmpActivity.Title = xNode.SelectSingleNode("title").InnerText;
+                tmpActivity.Title = HttpUtility.HtmlDecode(xNode.SelectSingleNode("title").InnerText);
                 tmpActivity.Artwork = DownloadImage(xNode.SelectSingleNode("artwork").SelectSingleNode("large").InnerText);
                 tmpActivity.GamerScore = new GamerScore(Int32.Parse(xNode.SelectSingleNode("gamerscore/current").InnerText), Int32.Parse(xNode.SelectSingleNode("gamerscore/total").InnerText));
                 tmpActivity.Achievements = new Achievements(Int32.Parse(xNode.SelectSingleNode("achievements/current").InnerText), Int32.Parse(xNode.SelectSingleNode("achievements/total").InnerText));
@@ -85,7 +87,8 @@ namespace XboxLeadersNETWrapper
         /// Downloads the game data for a the specified gamer tag.
         /// </summary>
         /// <param name="sGamerTag">The gamer tag to download game data for.</param>
-        /// <returns>Returns a <seealso cref="XboxLeadersAPI.Games">Games</seealso> object.</returns>
+        /// <returns>Returns a <seealso cref="XboxLeadersNETWrapper.Games">Games</seealso> object.</returns>
+        /// <example>XboxLeadersNETWrapper.Games gGames = XboxLeadersNETWrapper.DownloadGameData("Major Nelson");</example>
         public static Games DownloadGameData(String sGamerTag)
         {
             WebClient wcDownloader = new WebClient();
@@ -116,7 +119,7 @@ namespace XboxLeadersNETWrapper
 
             gDownloadedGames.GamerTag = xGames.SelectSingleNode("root/data/gamertag").InnerText;
             gDownloadedGames.GamerScore = new GamerScore(Int32.Parse(xGames.SelectSingleNode("root/data/gamerscore/current").InnerText), Int32.Parse(xGames.SelectSingleNode("root/data/gamerscore/total").InnerText));
-            gDownloadedGames.Achievements = new Achievements(Int32.Parse(xGames.SelectSingleNode("root/data/achievements/current").InnerText), Int32.Parse(xGames.SelectSingleNode("root/data/achievements/current").InnerText));
+            gDownloadedGames.Achievements = new Achievements(Int32.Parse(xGames.SelectSingleNode("root/data/achievements/current").InnerText), Int32.Parse(xGames.SelectSingleNode("root/data/achievements/total").InnerText));
             gDownloadedGames.TotalGames = Int32.Parse(xGames.SelectSingleNode("root/data/totalgames").InnerText);
             gDownloadedGames.Progress = Int32.Parse(xGames.SelectSingleNode("root/data/progress").InnerText);
 
@@ -129,7 +132,7 @@ namespace XboxLeadersNETWrapper
                 gGame.ID = Int32.Parse(xNode.SelectSingleNode("id").InnerText);
                 gGame.HID = xNode.SelectSingleNode("hid").InnerText;
                 gGame.IsApp = Boolean.Parse(xNode.SelectSingleNode("isapp").InnerText);
-                gGame.Title = xNode.SelectSingleNode("title").InnerText;
+                gGame.Title = HttpUtility.HtmlDecode(xNode.SelectSingleNode("title").InnerText);
                 gGame.Artwork = DownloadImage(xNode.SelectSingleNode("artwork").SelectSingleNode("large").InnerText);
                 gGame.GamerScore = new GamerScore(Int32.Parse(xNode.SelectSingleNode("gamerscore/current").InnerText), Int32.Parse(xNode.SelectSingleNode("gamerscore/total").InnerText));
                 gGame.Achievements = new Achievements(Int32.Parse(xNode.SelectSingleNode("achievements/current").InnerText), Int32.Parse(xNode.SelectSingleNode("achievements/total").InnerText));
@@ -143,15 +146,135 @@ namespace XboxLeadersNETWrapper
         }
 
         /// <summary>
-        /// Downloads the achievements for a the specified gamer tag.
+        /// Downloads the achievements for a the specified gamer tag and game ID.
         /// </summary>
         /// <param name="sGamerTag">The gamer tag of the player of the game.</param>
         /// <param name="iGameID">The ID of the game to download achievements for.</param>
-        /// <returns>Return a <seealso cref="XboxLeadersNETWrapper.GameAchievements">GameAchievements</seealso> object.</returns>
+        /// <returns>Returns a <seealso cref="XboxLeadersNETWrapper.GameAchievements">GameAchievements</seealso> object.</returns>
+        /// <example>XboxLeadersNETWrapper.GameAchievements gaAchievements = XboxLeadersNETWrapper.DownloadGameAchievements("Major Nelson", 1297287449);</example>
         public static GameAchievements DownloadGameAchievements(String sGamerTag, Int32 iGameID)
         {
-            //TODO: Need to start getting game achievement data
-            return null;
+            WebClient wcDownloader = new WebClient();
+            GameAchievements gaAchievements = new GameAchievements();
+            XmlDocument xGame = new XmlDocument();
+            XmlReader xReader;
+            XElement xJSONRoot;
+            Byte[] bJSONData;
+
+            bJSONData = System.Text.Encoding.ASCII.GetBytes(wcDownloader.DownloadString(String.Format("https://www.xboxleaders.com/api/achievements.json?gamertag={0}&gameid={1}", sGamerTag, iGameID)));
+
+            xReader = JsonReaderWriterFactory.CreateJsonReader(bJSONData, new XmlDictionaryReaderQuotas());
+
+            if (xReader == null)
+            {
+                throw new Exception("Unable to convert data.");
+            }
+
+            xJSONRoot = XElement.Load(xReader);
+
+            xGame.LoadXml(xJSONRoot.ToString());
+
+            if (xGame.SelectSingleNode("root/status").InnerText.ToLower() != "success")
+            {
+                //TODO: Catch errors in JSON feed (Problem: If JSON returns a 501 the WebClient throws an exception.)
+                throw new Exception("");
+            }
+
+            gaAchievements.GamerTag = xGame.SelectSingleNode("root/data/gamertag").InnerText;
+            gaAchievements.GameName = xGame.SelectSingleNode("root/data/game").InnerText;
+            gaAchievements.ID = Int32.Parse(xGame.SelectSingleNode("root/data/id").InnerText);
+            gaAchievements.HID = xGame.SelectSingleNode("root/data/hid").InnerText;
+            gaAchievements.GamerScore = new GamerScore(Int32.Parse(xGame.SelectSingleNode("root/data/gamerscore/current").InnerText), Int32.Parse(xGame.SelectSingleNode("root/data/gamerscore/total").InnerText));
+            gaAchievements.Achievements = new Achievements(Int32.Parse(xGame.SelectSingleNode("root/data/achievement/current").InnerText), Int32.Parse(xGame.SelectSingleNode("root/data/achievement/total").InnerText));
+            gaAchievements.Progress = Double.Parse(xGame.SelectSingleNode("root/data/progress").InnerText);
+            gaAchievements.LastPlayed = DateTimeFromEpoc(Int64.Parse(xGame.SelectSingleNode("root/data/lastplayed").InnerText));
+
+            gaAchievements.AchievementList = new List<Achievement>();
+
+            foreach (XmlNode xAchievement in xGame.SelectNodes("root/data/achievements/item"))
+            {
+                Achievement aAchievement = new Achievement();
+
+                aAchievement.ID = Int32.Parse(xAchievement.SelectSingleNode("id").InnerText);
+                aAchievement.Title = xAchievement.SelectSingleNode("title").InnerText;
+                aAchievement.LockedArtwork = DownloadImage(xAchievement.SelectSingleNode("artwork/locked").InnerText);
+                aAchievement.UnlockedArtwork = DownloadImage(xAchievement.SelectSingleNode("artwork/unlocked").InnerText);
+                aAchievement.Description = xAchievement.SelectSingleNode("description").InnerText;
+                aAchievement.GamerScore = Int32.Parse(xAchievement.SelectSingleNode("gamerscore").InnerText);
+                aAchievement.Secret = Boolean.Parse(xAchievement.SelectSingleNode("secret").InnerText);
+                aAchievement.Unlocked = Boolean.Parse(xAchievement.SelectSingleNode("unlocked").InnerText);
+
+                if (aAchievement.Unlocked)
+                {
+                    aAchievement.UnlockedDate = DateTimeFromEpoc(Int64.Parse(xAchievement.SelectSingleNode("unlockdate").InnerText));
+                    aAchievement.UnlockedOffline = Boolean.Parse(xAchievement.SelectSingleNode("unlockedoffline").InnerText);
+                }
+                else
+                {
+                    aAchievement.UnlockedOffline = false;
+                }
+
+                gaAchievements.AchievementList.Add(aAchievement);
+            }
+
+            return gaAchievements;
+        }
+
+        /// <summary>
+        /// Downloads the friend list for the specified gamer tag.
+        /// </summary>
+        /// <param name="sGamerTag">The gamer tag to download the friends list for.</param>
+        /// <returns>Returns a <seealso cref="XboxLeadersNETWrapper.Friends">Friends</seealso> object.</returns>
+        /// <example>XboxLeadersNETWrapper.Friends fFriends = XboxLeadersNETWrapper.DownloadFriendList("Major Nelson");</example>
+        public static Friends DownloadFriendList(String sGamerTag)
+        {
+            WebClient wcDownloader = new WebClient();
+            XmlDocument xFriends = new XmlDocument();
+            Friends fFriends = new Friends();
+            XmlReader xReader;
+            XElement xJSONRoot;
+            Byte[] bJSONData;
+
+            bJSONData = System.Text.Encoding.ASCII.GetBytes(wcDownloader.DownloadString("https://www.xboxleaders.com/api/friends.json?gamertag=" + sGamerTag));
+
+            xReader = JsonReaderWriterFactory.CreateJsonReader(bJSONData, new XmlDictionaryReaderQuotas());
+
+            if (xReader == null)
+            {
+                throw new Exception("Unable to convert data.");
+            }
+
+            xJSONRoot = XElement.Load(xReader);
+
+            xFriends.LoadXml(xJSONRoot.ToString());
+
+            if (xFriends.SelectSingleNode("root/status").InnerText.ToLower() != "success")
+            {
+                //TODO: Catch errors in JSON feed (Problem: If JSON returns a 501 the WebClient throws an exception.)
+                throw new Exception("");
+            }
+
+            fFriends.Total = Int32.Parse(xFriends.SelectSingleNode("root/data/total").InnerText);
+            fFriends.Online = Int32.Parse(xFriends.SelectSingleNode("root/data/totalonline").InnerText);
+            fFriends.Offline = Int32.Parse(xFriends.SelectSingleNode("root/data/totaloffline").InnerText);
+
+            fFriends.GamerFriends = new List<Friend>();
+
+            foreach (XmlNode xNode in xFriends.SelectNodes("root/data/friends/item"))
+            {
+                Friend fFriend = new Friend();
+
+                fFriend.GamerTag = xNode.SelectSingleNode("gamertag").InnerText;
+                fFriend.GamerPic = DownloadImage(xNode.SelectSingleNode("gamerpic/large").InnerText);
+                fFriend.GamerScore = Int32.Parse(xNode.SelectSingleNode("gamerscore").InnerText);
+                fFriend.Online = Boolean.Parse(xNode.SelectSingleNode("online").InnerText);
+                fFriend.Status = xNode.SelectSingleNode("status").InnerText;
+                fFriend.LastSeen = DateTimeFromEpoc(Int64.Parse(xNode.SelectSingleNode("lastseen").InnerText));
+
+                fFriends.GamerFriends.Add(fFriend);
+            }
+
+            return fFriends;
         }
 
         /// <summary>
@@ -185,8 +308,7 @@ namespace XboxLeadersNETWrapper
             }
             catch (Exception)
             {
-                //TODO: Account for 404s
-                return null;
+                return Properties.Resources.boxart_nodownload;
             }
         }
 
