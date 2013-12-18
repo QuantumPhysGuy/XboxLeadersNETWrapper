@@ -31,7 +31,14 @@
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("Online", System.Windows.Forms.HorizontalAlignment.Left);
             System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("Offline", System.Windows.Forms.HorizontalAlignment.Left);
+            this.cmsGames = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.gameDetailsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tpXLProfile = new System.Windows.Forms.TabPage();
+            this.cmdGetData = new System.Windows.Forms.Button();
+            this.txtGamerTag = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tpProfile = new System.Windows.Forms.TabPage();
             this.gbActivity = new System.Windows.Forms.GroupBox();
             this.lsvActivity = new System.Windows.Forms.ListView();
@@ -56,36 +63,107 @@
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.cmsGames = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.gameDetailsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.label1 = new System.Windows.Forms.Label();
-            this.txtGamerTag = new System.Windows.Forms.TextBox();
-            this.cmdGetData = new System.Windows.Forms.Button();
             this.tpFriends = new System.Windows.Forms.TabPage();
             this.lsvFriends = new System.Windows.Forms.ListView();
             this.chGamerTag = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.chLastSeen = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chStatus = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chLastSeen = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.tpSearch = new System.Windows.Forms.TabPage();
+            this.lnkBrowser = new System.Windows.Forms.LinkLabel();
+            this.gbSearchResults = new System.Windows.Forms.GroupBox();
+            this.lsvSearchResults = new System.Windows.Forms.ListView();
+            this.chTitle = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chDownloadType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chPrice = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.cmdSearch = new System.Windows.Forms.Button();
+            this.txtQuery = new System.Windows.Forms.TextBox();
+            this.lblQuery = new System.Windows.Forms.Label();
+            this.cmsGames.SuspendLayout();
             this.tabControl1.SuspendLayout();
+            this.tpXLProfile.SuspendLayout();
+            this.tabControl2.SuspendLayout();
             this.tpProfile.SuspendLayout();
             this.gbActivity.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbAvatar)).BeginInit();
             this.tpGames.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.cmsGames.SuspendLayout();
             this.tpFriends.SuspendLayout();
+            this.tpSearch.SuspendLayout();
+            this.gbSearchResults.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // cmsGames
+            // 
+            this.cmsGames.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.gameDetailsToolStripMenuItem});
+            this.cmsGames.Name = "cmsGames";
+            this.cmsGames.Size = new System.Drawing.Size(144, 26);
+            // 
+            // gameDetailsToolStripMenuItem
+            // 
+            this.gameDetailsToolStripMenuItem.Name = "gameDetailsToolStripMenuItem";
+            this.gameDetailsToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.gameDetailsToolStripMenuItem.Text = "&Game Details";
             // 
             // tabControl1
             // 
-            this.tabControl1.Controls.Add(this.tpProfile);
-            this.tabControl1.Controls.Add(this.tpGames);
-            this.tabControl1.Controls.Add(this.tpFriends);
-            this.tabControl1.Location = new System.Drawing.Point(12, 33);
+            this.tabControl1.Controls.Add(this.tpXLProfile);
+            this.tabControl1.Controls.Add(this.tpSearch);
+            this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(518, 328);
-            this.tabControl1.TabIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(539, 393);
+            this.tabControl1.TabIndex = 1;
+            // 
+            // tpXLProfile
+            // 
+            this.tpXLProfile.BackColor = System.Drawing.SystemColors.Control;
+            this.tpXLProfile.Controls.Add(this.cmdGetData);
+            this.tpXLProfile.Controls.Add(this.txtGamerTag);
+            this.tpXLProfile.Controls.Add(this.label1);
+            this.tpXLProfile.Controls.Add(this.tabControl2);
+            this.tpXLProfile.Location = new System.Drawing.Point(4, 22);
+            this.tpXLProfile.Name = "tpXLProfile";
+            this.tpXLProfile.Padding = new System.Windows.Forms.Padding(3);
+            this.tpXLProfile.Size = new System.Drawing.Size(531, 367);
+            this.tpXLProfile.TabIndex = 0;
+            this.tpXLProfile.Text = "Xbox Live Profile";
+            // 
+            // cmdGetData
+            // 
+            this.cmdGetData.Location = new System.Drawing.Point(294, 7);
+            this.cmdGetData.Name = "cmdGetData";
+            this.cmdGetData.Size = new System.Drawing.Size(75, 23);
+            this.cmdGetData.TabIndex = 7;
+            this.cmdGetData.Text = "&Get Data";
+            this.cmdGetData.UseVisualStyleBackColor = true;
+            // 
+            // txtGamerTag
+            // 
+            this.txtGamerTag.Location = new System.Drawing.Point(75, 9);
+            this.txtGamerTag.Name = "txtGamerTag";
+            this.txtGamerTag.Size = new System.Drawing.Size(213, 20);
+            this.txtGamerTag.TabIndex = 6;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(9, 12);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(60, 13);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "GamerTag:";
+            // 
+            // tabControl2
+            // 
+            this.tabControl2.Controls.Add(this.tpProfile);
+            this.tabControl2.Controls.Add(this.tpGames);
+            this.tabControl2.Controls.Add(this.tpFriends);
+            this.tabControl2.Location = new System.Drawing.Point(8, 36);
+            this.tabControl2.Name = "tabControl2";
+            this.tabControl2.SelectedIndex = 0;
+            this.tabControl2.Size = new System.Drawing.Size(518, 328);
+            this.tabControl2.TabIndex = 4;
             // 
             // tpProfile
             // 
@@ -307,44 +385,6 @@
             this.columnHeader7.Text = "Last Played";
             this.columnHeader7.Width = 137;
             // 
-            // cmsGames
-            // 
-            this.cmsGames.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.gameDetailsToolStripMenuItem});
-            this.cmsGames.Name = "cmsGames";
-            this.cmsGames.Size = new System.Drawing.Size(144, 26);
-            // 
-            // gameDetailsToolStripMenuItem
-            // 
-            this.gameDetailsToolStripMenuItem.Name = "gameDetailsToolStripMenuItem";
-            this.gameDetailsToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
-            this.gameDetailsToolStripMenuItem.Text = "&Game Details";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 9);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(60, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "GamerTag:";
-            // 
-            // txtGamerTag
-            // 
-            this.txtGamerTag.Location = new System.Drawing.Point(79, 6);
-            this.txtGamerTag.Name = "txtGamerTag";
-            this.txtGamerTag.Size = new System.Drawing.Size(213, 20);
-            this.txtGamerTag.TabIndex = 2;
-            // 
-            // cmdGetData
-            // 
-            this.cmdGetData.Location = new System.Drawing.Point(298, 4);
-            this.cmdGetData.Name = "cmdGetData";
-            this.cmdGetData.Size = new System.Drawing.Size(75, 23);
-            this.cmdGetData.TabIndex = 3;
-            this.cmdGetData.Text = "&Get Data";
-            this.cmdGetData.UseVisualStyleBackColor = true;
-            // 
             // tpFriends
             // 
             this.tpFriends.BackColor = System.Drawing.SystemColors.Control;
@@ -382,29 +422,124 @@
             this.chGamerTag.Text = "Gamer Tag";
             this.chGamerTag.Width = 158;
             // 
-            // chLastSeen
-            // 
-            this.chLastSeen.Text = "Last Seen";
-            this.chLastSeen.Width = 131;
-            // 
             // chStatus
             // 
             this.chStatus.Text = "Status";
             this.chStatus.Width = 204;
             // 
+            // chLastSeen
+            // 
+            this.chLastSeen.Text = "Last Seen";
+            this.chLastSeen.Width = 131;
+            // 
+            // tpSearch
+            // 
+            this.tpSearch.BackColor = System.Drawing.SystemColors.Control;
+            this.tpSearch.Controls.Add(this.lnkBrowser);
+            this.tpSearch.Controls.Add(this.gbSearchResults);
+            this.tpSearch.Controls.Add(this.cmdSearch);
+            this.tpSearch.Controls.Add(this.txtQuery);
+            this.tpSearch.Controls.Add(this.lblQuery);
+            this.tpSearch.Location = new System.Drawing.Point(4, 22);
+            this.tpSearch.Name = "tpSearch";
+            this.tpSearch.Padding = new System.Windows.Forms.Padding(3);
+            this.tpSearch.Size = new System.Drawing.Size(531, 367);
+            this.tpSearch.TabIndex = 1;
+            this.tpSearch.Text = "Search XBox Live";
+            // 
+            // lnkBrowser
+            // 
+            this.lnkBrowser.AutoSize = true;
+            this.lnkBrowser.Enabled = false;
+            this.lnkBrowser.Location = new System.Drawing.Point(414, 351);
+            this.lnkBrowser.Name = "lnkBrowser";
+            this.lnkBrowser.Size = new System.Drawing.Size(114, 13);
+            this.lnkBrowser.TabIndex = 4;
+            this.lnkBrowser.TabStop = true;
+            this.lnkBrowser.Text = "View Query In Browser";
+            // 
+            // gbSearchResults
+            // 
+            this.gbSearchResults.Controls.Add(this.lsvSearchResults);
+            this.gbSearchResults.Location = new System.Drawing.Point(9, 37);
+            this.gbSearchResults.Name = "gbSearchResults";
+            this.gbSearchResults.Size = new System.Drawing.Size(516, 311);
+            this.gbSearchResults.TabIndex = 3;
+            this.gbSearchResults.TabStop = false;
+            this.gbSearchResults.Text = "&Search Results";
+            // 
+            // lsvSearchResults
+            // 
+            this.lsvSearchResults.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.chTitle,
+            this.chDownloadType,
+            this.chPrice});
+            this.lsvSearchResults.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lsvSearchResults.FullRowSelect = true;
+            this.lsvSearchResults.GridLines = true;
+            this.lsvSearchResults.Location = new System.Drawing.Point(3, 16);
+            this.lsvSearchResults.Name = "lsvSearchResults";
+            this.lsvSearchResults.Size = new System.Drawing.Size(510, 292);
+            this.lsvSearchResults.TabIndex = 0;
+            this.lsvSearchResults.UseCompatibleStateImageBehavior = false;
+            this.lsvSearchResults.View = System.Windows.Forms.View.Details;
+            // 
+            // chTitle
+            // 
+            this.chTitle.Text = "Title";
+            this.chTitle.Width = 286;
+            // 
+            // chDownloadType
+            // 
+            this.chDownloadType.Text = "Download Type";
+            this.chDownloadType.Width = 105;
+            // 
+            // chPrice
+            // 
+            this.chPrice.Text = "Price";
+            this.chPrice.Width = 112;
+            // 
+            // cmdSearch
+            // 
+            this.cmdSearch.Location = new System.Drawing.Point(312, 9);
+            this.cmdSearch.Name = "cmdSearch";
+            this.cmdSearch.Size = new System.Drawing.Size(75, 23);
+            this.cmdSearch.TabIndex = 2;
+            this.cmdSearch.Text = "&Search";
+            this.cmdSearch.UseVisualStyleBackColor = true;
+            // 
+            // txtQuery
+            // 
+            this.txtQuery.Location = new System.Drawing.Point(50, 11);
+            this.txtQuery.Name = "txtQuery";
+            this.txtQuery.Size = new System.Drawing.Size(256, 20);
+            this.txtQuery.TabIndex = 1;
+            // 
+            // lblQuery
+            // 
+            this.lblQuery.AutoSize = true;
+            this.lblQuery.Location = new System.Drawing.Point(6, 14);
+            this.lblQuery.Name = "lblQuery";
+            this.lblQuery.Size = new System.Drawing.Size(38, 13);
+            this.lblQuery.TabIndex = 0;
+            this.lblQuery.Text = "Query:";
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(542, 373);
-            this.Controls.Add(this.cmdGetData);
-            this.Controls.Add(this.txtGamerTag);
-            this.Controls.Add(this.label1);
+            this.ClientSize = new System.Drawing.Size(554, 409);
             this.Controls.Add(this.tabControl1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "XboxLeader API Sample";
+            this.cmsGames.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
+            this.tpXLProfile.ResumeLayout(false);
+            this.tpXLProfile.PerformLayout();
+            this.tabControl2.ResumeLayout(false);
             this.tpProfile.ResumeLayout(false);
             this.tpProfile.PerformLayout();
             this.gbActivity.ResumeLayout(false);
@@ -412,23 +547,29 @@
             this.tpGames.ResumeLayout(false);
             this.tpGames.PerformLayout();
             this.groupBox1.ResumeLayout(false);
-            this.cmsGames.ResumeLayout(false);
             this.tpFriends.ResumeLayout(false);
+            this.tpSearch.ResumeLayout(false);
+            this.tpSearch.PerformLayout();
+            this.gbSearchResults.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
+        private System.Windows.Forms.ContextMenuStrip cmsGames;
+        private System.Windows.Forms.ToolStripMenuItem gameDetailsToolStripMenuItem;
         private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tpProfile;
-        private System.Windows.Forms.TabPage tpGames;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox txtGamerTag;
+        private System.Windows.Forms.TabPage tpXLProfile;
         private System.Windows.Forms.Button cmdGetData;
-        private System.Windows.Forms.PictureBox pbAvatar;
+        private System.Windows.Forms.TextBox txtGamerTag;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TabControl tabControl2;
+        private System.Windows.Forms.TabPage tpProfile;
         private System.Windows.Forms.GroupBox gbActivity;
+        private System.Windows.Forms.ListView lsvActivity;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.Label lblBiography;
         private System.Windows.Forms.Label lblLocation;
         private System.Windows.Forms.Label lblOnline;
@@ -436,26 +577,33 @@
         private System.Windows.Forms.Label lblRep;
         private System.Windows.Forms.Label lblScore;
         private System.Windows.Forms.Label lblGamerTag;
-        private System.Windows.Forms.ListView lsvActivity;
-        private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.ColumnHeader columnHeader2;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.ListView lsvGames;
+        private System.Windows.Forms.PictureBox pbAvatar;
+        private System.Windows.Forms.TabPage tpGames;
         private System.Windows.Forms.Label lblProgress;
         private System.Windows.Forms.Label lblTotalGames;
         private System.Windows.Forms.Label lblAchievements;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.ListView lsvGames;
         private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.ColumnHeader columnHeader4;
         private System.Windows.Forms.ColumnHeader columnHeader5;
         private System.Windows.Forms.ColumnHeader columnHeader6;
         private System.Windows.Forms.ColumnHeader columnHeader7;
-        private System.Windows.Forms.ContextMenuStrip cmsGames;
-        private System.Windows.Forms.ToolStripMenuItem gameDetailsToolStripMenuItem;
         private System.Windows.Forms.TabPage tpFriends;
         private System.Windows.Forms.ListView lsvFriends;
         private System.Windows.Forms.ColumnHeader chGamerTag;
         private System.Windows.Forms.ColumnHeader chStatus;
         private System.Windows.Forms.ColumnHeader chLastSeen;
+        private System.Windows.Forms.TabPage tpSearch;
+        private System.Windows.Forms.GroupBox gbSearchResults;
+        private System.Windows.Forms.ListView lsvSearchResults;
+        private System.Windows.Forms.Button cmdSearch;
+        private System.Windows.Forms.TextBox txtQuery;
+        private System.Windows.Forms.Label lblQuery;
+        private System.Windows.Forms.ColumnHeader chTitle;
+        private System.Windows.Forms.ColumnHeader chDownloadType;
+        private System.Windows.Forms.ColumnHeader chPrice;
+        private System.Windows.Forms.LinkLabel lnkBrowser;
 
     }
 }

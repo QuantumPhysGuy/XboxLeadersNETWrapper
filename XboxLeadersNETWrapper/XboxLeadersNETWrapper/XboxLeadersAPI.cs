@@ -6,6 +6,7 @@ using System.Web;
 using System.Drawing;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using System.ComponentModel;
 using System.Collections.Generic;
 using System.Runtime.Serialization.Json;
 
@@ -16,6 +17,7 @@ namespace XboxLeadersNETWrapper
     /// </summary>
     public static class XboxLeadersAPI
     {
+
         /// <summary>
         /// Downloads the profile data for a the specified gamer tag.
         /// </summary>
@@ -29,8 +31,8 @@ namespace XboxLeadersNETWrapper
             XmlDocument xProfile = new XmlDocument();
             XmlReader xReader;
             XElement xJSONRoot;
-            Byte[] bJSONData;            
-            
+            Byte[] bJSONData;
+
             bJSONData = System.Text.Encoding.ASCII.GetBytes(wcDownloader.DownloadString("https://www.xboxleaders.com/api/profile.json?gamertag=" + sGamerTag));
 
             xReader = JsonReaderWriterFactory.CreateJsonReader(bJSONData, new XmlDictionaryReaderQuotas());
@@ -196,7 +198,7 @@ namespace XboxLeadersNETWrapper
                 Achievement aAchievement = new Achievement();
 
                 aAchievement.ID = Int32.Parse(xAchievement.SelectSingleNode("id").InnerText);
-                aAchievement.Title = xAchievement.SelectSingleNode("title").InnerText;
+                aAchievement.Title = HttpUtility.HtmlDecode(xAchievement.SelectSingleNode("title").InnerText);
                 aAchievement.LockedArtwork = DownloadImage(xAchievement.SelectSingleNode("artwork/locked").InnerText);
                 aAchievement.UnlockedArtwork = DownloadImage(xAchievement.SelectSingleNode("artwork/unlocked").InnerText);
                 aAchievement.Description = xAchievement.SelectSingleNode("description").InnerText;
@@ -275,6 +277,64 @@ namespace XboxLeadersNETWrapper
             }
 
             return fFriends;
+        }
+
+        /// <summary>
+        /// Downloads XBox Live search results based on the specified search query.
+        /// </summary>
+        /// <param name="sSearchQuery">The search query for the search.</param>
+        /// <returns>Returns a <seealso cref="XboxLeadersNETWrapper.Search">Search</seealso> object</returns>
+        /// <example>XboxLeadersNETWrapper.Search sSearch = XboxLeadersNETWrapper.DownloadSearchResults("GTA V");</example>
+        public static Search DownloadSearchResults(String sSearchQuery)
+        {
+            WebClient wcDownloader = new WebClient();
+            String sFormattedQuery = HttpUtility.UrlPathEncode(sSearchQuery);
+            GameAchievements gaAchievements = new GameAchievements();
+            XmlDocument xSearchResults = new XmlDocument();
+            Search sSearch = new Search();
+            XmlReader xReader;
+            XElement xJSONRoot;
+            Byte[] bJSONData;
+
+            bJSONData = System.Text.Encoding.ASCII.GetBytes(wcDownloader.DownloadString("https://www.xboxleaders.com/api/search.json?query=" + sFormattedQuery));
+
+            xReader = JsonReaderWriterFactory.CreateJsonReader(bJSONData, new XmlDictionaryReaderQuotas());
+
+            if (xReader == null)
+            {
+                throw new Exception("Unable to convert data.");
+            }
+
+            xJSONRoot = XElement.Load(xReader);
+
+            xSearchResults.LoadXml(xJSONRoot.ToString());
+
+            if (xSearchResults.SelectSingleNode("root/status").InnerText.ToLower() != "success")
+            {
+                //TODO: Catch errors in JSON feed (Problem: If JSON returns a 501 the WebClient throws an exception.)
+                throw new Exception("");
+            }
+
+            sSearch.TotalResults = Int32.Parse(xSearchResults.SelectSingleNode("root/data/totalresults").InnerText);
+            sSearch.ResultsLink = new Uri(xSearchResults.SelectSingleNode("root/data/resultslink").InnerText);
+
+            sSearch.Results = new List<SearchResult>();
+
+            foreach (XmlNode xNode in xSearchResults.SelectNodes("root/data/results/item"))
+            {
+                SearchResult srResult = new SearchResult();
+
+                srResult.Title = xNode.SelectSingleNode("title").InnerText;
+                srResult.Parent = xNode.SelectSingleNode("parent").InnerText;
+                srResult.Link = new Uri(xNode.SelectSingleNode("link").InnerText);
+                srResult.Image = DownloadImage(xNode.SelectSingleNode("image").InnerText);
+                srResult.DownloadType = new DownloadType(xNode.SelectSingleNode("downloadtype/class").InnerText, xNode.SelectSingleNode("downloadtype/title").InnerText);
+                srResult.Prices = new Prices(xNode.SelectSingleNode("prices/silver").InnerText, xNode.SelectSingleNode("prices/gold").InnerText);
+
+                sSearch.Results.Add(srResult);
+            }
+
+            return sSearch;
         }
 
         /// <summary>

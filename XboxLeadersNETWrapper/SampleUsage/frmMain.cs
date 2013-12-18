@@ -15,9 +15,13 @@ namespace SampleUsage
             InitializeComponent();
 
             cmdGetData.Click += cmdGetData_Click;
-            gameDetailsToolStripMenuItem.Click += gameDetailsToolStripMenuItem_Click;
-        }
+            cmdSearch.Click += cmdSearch_Click;
 
+            gameDetailsToolStripMenuItem.Click += gameDetailsToolStripMenuItem_Click;
+
+            lnkBrowser.Click += lnkBrowser_Click;
+        }
+        
         private void cmdGetData_Click(object sender, EventArgs e)
         {
             ListViewItem lsvItem;
@@ -76,6 +80,29 @@ namespace SampleUsage
 
                 lsvFriends.Items.Add(lsvItem);
             }
+        }
+
+        private void cmdSearch_Click(object sender, EventArgs e)
+        {
+            Search sSearch = XboxLeadersAPI.DownloadSearchResults(txtQuery.Text);
+
+            foreach (SearchResult srResult in sSearch.Results)
+            {
+                ListViewItem lsvItem = new ListViewItem(srResult.Title);
+
+                lsvItem.SubItems.Add(srResult.DownloadType.Class);
+                lsvItem.SubItems.Add(String.Format("Silver: {0} Gold: {0}", srResult.Prices.Silver, srResult.Prices.Gold));
+
+                lsvSearchResults.Items.Add(lsvItem);
+            }
+
+            lnkBrowser.Tag = sSearch.ResultsLink.ToString();
+            lnkBrowser.Enabled = true;
+        }
+        
+        private void lnkBrowser_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start(lnkBrowser.Tag.ToString());
         }
 
         private void gameDetailsToolStripMenuItem_Click(object sender, EventArgs e)

@@ -45,16 +45,20 @@
   <ItemGroup>
     <Compile Include="Achievement.cs" />
     <Compile Include="Achievements.cs" />
+    <Compile Include="DownloadType.cs" />
     <Compile Include="Friend.cs" />
     <Compile Include="Friends.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameAchievements.cs" />
     <Compile Include="Games.cs" />
+    <Compile Include="Prices.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Search.cs" />
+    <Compile Include="SearchResult.cs" />
     <Compile Include="XboxLeadersAPI.cs" />
     <Compile Include="GamerScore.cs" />
     <Compile Include="Profile.cs" />
